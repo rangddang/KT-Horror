@@ -4,29 +4,24 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	[SerializeField]
-	private float maxSpeed;
+	public GameManager gameManager;
+
+	public float maxSpeed;
 
 	private float walkSpeed;
 
-	[SerializeField]
-	private float gravity;
+	public float gravity;
 
-	[SerializeField]
-	private float lookSensitivity;
+	public float lookSensitivity;
 
-	[SerializeField]
-	private float cameraRotationLimit;
+	public float cameraRotationLimit;
 	private float currentCameraRotationX = 0;
 
-	[SerializeField]
-	private Camera theCamera;
+	public Camera theCamera;
 
-	[SerializeField]
-	private Light theLight;
+	public Light theLight;
 
-	[SerializeField]
-	private CharacterController _charter;
+	public CharacterController _charter;
 
 	private Rigidbody myRigid;
 
@@ -39,6 +34,7 @@ public class PlayerController : MonoBehaviour
 	private void Awake()
 	{
 		//theCamera = FindObjectOfType<Camera>();
+		//gameManager = GetComponent<GameManager>();
 		myRigid = GetComponent<Rigidbody>();
         lightBool = 1;
         lightPosition = 0.0f;

@@ -6,8 +6,7 @@ public class EyesMove : MonoBehaviour
 {
 	private LightController _light;
 
-	[SerializeField]
-	private Transform taget;
+	public Transform taget;
 
 	public float speed = 5f;
 

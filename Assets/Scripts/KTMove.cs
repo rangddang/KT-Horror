@@ -5,8 +5,7 @@ using UnityEngine;
 public class KTMove : MonoBehaviour
 {
 
-	[SerializeField]
-	private Transform taget;
+	public Transform taget;
 
 	public float speed = 1.5f;
 
