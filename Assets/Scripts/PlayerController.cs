@@ -48,8 +48,9 @@ public class PlayerController : MonoBehaviour
 	{
 		Gravity();
 		Move();
-		CameraRotation();
 		CharacteraRotation();
+		CameraRotation();
+		
 		
 	}
 
