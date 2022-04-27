@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
 
 	private int lightBool;
 
+	public StaminaBar Sta;
+
 
 
 	private void Awake()
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
 		//theCamera = FindObjectOfType<Camera>();
 		//gameManager = GetComponent<GameManager>();
 		myRigid = GetComponent<Rigidbody>();
+		//Sta = GetComponent
         lightBool = 1;
         lightPosition = 0.0f;
     }
@@ -62,7 +65,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Move()
 	{
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && Sta.staminaBool == true)
         {
 			walkSpeed = maxSpeed * 1.6f;
         }

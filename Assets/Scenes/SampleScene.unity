@@ -3218,15 +3218,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.64312875, g: 1, b: 0.3537736, a: 1}
+  m_Color: {r: 0.64312875, g: 1, b: 0.3537736, a: 0.78431374}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -6938,6 +6938,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staminaBar: {fileID: 1908571520}
   stamina: {fileID: 711896471}
+  staminaMax: 0
+  haveStamina: 0
+  staminaBool: 1
 --- !u!114 &1775802009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6958,6 +6961,7 @@ MonoBehaviour:
   theCamera: {fileID: 1360493446}
   theLight: {fileID: 1894175320}
   _charter: {fileID: 1775802010}
+  Sta: {fileID: 1775802007}
 --- !u!143 &1775802010 stripped
 CharacterController:
   m_CorrespondingSourceObject: {fileID: 14320068, guid: d08d3436960136e4b931d585653ee519, type: 3}
@@ -7706,8 +7710,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
