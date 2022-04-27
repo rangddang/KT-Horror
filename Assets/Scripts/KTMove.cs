@@ -1,35 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class KTMove : MonoBehaviour
+public class KTMove : EyesMove
 {
-
-	public Transform taget;
-
-	public float speed = 1.5f;
-
-
-	void Awake()
-    {
-		//taget = GetComponent<Transform>();
-    }
-
-	void Update()
+	protected override void Update()
 	{
-		Rot();
+		base.Update();
+
 		MoveKT();
 	}
 
-	public void Rot()
-    {
-		Vector3 direction = (taget.position - transform.position);
+	protected override void TurnObject()
+	{
+		Vector3 direction = (target.position - transform.position);
 		Quaternion rotation = Quaternion.LookRotation(direction);
-		transform.rotation = Quaternion.Lerp(transform.rotation, rotation, speed * Time.deltaTime);
+		transform.rotation = Quaternion.Lerp(transform.rotation, rotation, turnSpeed * Time.deltaTime);
 	}
-	
+
 	private void MoveKT()
-    {
+	{
 		//if()
-    }
+	}
 }

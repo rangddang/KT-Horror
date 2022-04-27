@@ -63,5 +63,12 @@ public class LightController : MonoBehaviour
 			flashBool = false;
 		}
 	}
-
+	IEnumerator SetFlash()
+	{
+		while (true)
+		{
+			//if() //라이트 재구축!S
+			yield return null;
+		}
+	}
 }

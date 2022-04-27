@@ -1,37 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EyesMove : MonoBehaviour
 {
-	private LightController _light;
+	public Transform target;
 
-	public Transform taget;
+	public float turnSpeed;
 
-	public float speed = 5f;
-
-	private void Awake()
+	protected virtual void Update()
 	{
-		_light = GetComponent<LightController>();
+		TurnObject();
 	}
 
-	void Update()
+	protected virtual void TurnObject()
 	{
-		RotEyes();
-	}
-
-	public void RotEyes()
-    {
-		Vector3 direction = (taget.position - transform.position);
+		Vector3 direction = (target.position - transform.position);
 		Quaternion rotation = Quaternion.LookRotation(direction);
-		Quaternion Rt = Quaternion.Euler(-87f,0,0);
-		transform.rotation = Quaternion.Lerp(transform.rotation, rotation * Rt, speed * Time.deltaTime);
-	}
-
-	void EyeScale()
-	{
-		transform.localScale = new Vector3(0.7f,1,0.7f);
-
-		transform.localScale = new Vector3(1f, 1, 1f);
+		rotation.eulerAngles += new Vector3(-90, 0, 0);
+		transform.rotation = Quaternion.Lerp(transform.rotation, rotation, turnSpeed * Time.deltaTime);
 	}
 }

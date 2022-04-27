@@ -65,14 +65,14 @@ public class PlayerController : MonoBehaviour
 
 	private void Move()
 	{
-        if (Input.GetKey(KeyCode.LeftShift) && Sta.staminaBool == true)
-        {
-			walkSpeed = maxSpeed * 1.6f;
-        }
-        else
-        {
-			walkSpeed = maxSpeed;
-        }
+   //     if (Input.GetKey(KeyCode.LeftShift) && Sta.staminaBool == true) //스테미나 바와 라이트 컨트롤러 코드 재구축하기!
+   //     {
+			//walkSpeed = maxSpeed * 1.6f;
+   //     }
+   //     else
+   //     {
+			//walkSpeed = maxSpeed;
+   //     }
 
 		float _moveDirX = Input.GetAxisRaw("Horizontal");
 		float _moveDirZ = Input.GetAxisRaw("Vertical");
