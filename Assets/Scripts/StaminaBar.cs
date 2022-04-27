@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class StaminaBar : MonoBehaviour
 {
-    public RectTransform stBar;
-    public RectTransform st;
+    public RectTransform staminaBar;
+    public RectTransform stamina;
 
     void Start()
     {
@@ -16,7 +16,15 @@ public class StaminaBar : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
+            staminaBar.gameObject.SetActive(true);
+            stamina.gameObject.SetActive(true);
             
+        }
+        else
+        {
+            staminaBar.gameObject.SetActive(false);
+            stamina.gameObject.SetActive(false);
+
         }
     }
 }

@@ -22,9 +22,10 @@ public class EyesMove : MonoBehaviour
 
 	public void RotEyes()
     {
-		Vector3 direction = (taget.position - transform.position) + new Vector3(0, 23f, 0);
+		Vector3 direction = (taget.position - transform.position);
 		Quaternion rotation = Quaternion.LookRotation(direction);
-		transform.rotation = Quaternion.Lerp(transform.rotation, rotation, speed * Time.deltaTime);
+		Quaternion Rt = Quaternion.Euler(-87f,0,0);
+		transform.rotation = Quaternion.Lerp(transform.rotation, rotation * Rt, speed * Time.deltaTime);
 	}
 
 	void EyeScale()
