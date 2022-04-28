@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
 	private int lightBool;
 
-	public StaminaBar Sta;
+	public Stamina stamina;
 
 
 
@@ -65,17 +65,24 @@ public class PlayerController : MonoBehaviour
 
 	private void Move()
 	{
-   //     if (Input.GetKey(KeyCode.LeftShift) && Sta.staminaBool == true) //스테미나 바와 라이트 컨트롤러 코드 재구축하기!
-   //     {
-			//walkSpeed = maxSpeed * 1.6f;
-   //     }
-   //     else
-   //     {
-			//walkSpeed = maxSpeed;
-   //     }
+		//if (stamina.run) //스테미나 바와 라이트 컨트롤러 코드 재구축하기!
 
 		float _moveDirX = Input.GetAxisRaw("Horizontal");
 		float _moveDirZ = Input.GetAxisRaw("Vertical");
+
+		if (stamina.run)
+		{
+			walkSpeed = maxSpeed * 2f;
+		}
+		else
+		{
+			walkSpeed = maxSpeed;
+		}
+
+		if (_moveDirZ < 0)
+		{
+			walkSpeed -= 0.5f;
+		}
 
 		Vector3 _moveJump = new Vector3(0, 0, 0);
 		_moveJump += transform.up * (Gravity());
