@@ -15,7 +15,7 @@ public class KTEye : MonoBehaviour
 	{
 		Vector3 direction = (target.position - transform.position);
 		Quaternion rotation = Quaternion.LookRotation(direction);
-		rotation.eulerAngles += new Vector3(-90, 0, 0);
+		rotation.eulerAngles += new Vector3(-87f, 0, 0);
 		transform.rotation = Quaternion.Lerp(transform.rotation, rotation, turnSpeed * Time.deltaTime);
 	}
 }
