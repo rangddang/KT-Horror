@@ -4,61 +4,6 @@ using UnityEngine.UI;
 
 public class Stamina : MonoBehaviour
 {
-	//public RectTransform staminaBar;
-	//public RectTransform stamina;
-	//public float staminaMax;
-	//public float haveStamina;
-	//public bool staminaBool = true;
-
-	//void Start()
-	//{
-	//	staminaMax = 10f;
-	//	haveStamina = staminaMax;
-	//}
-
-	//void Update()
-	//{
-	//	InputStamina();
-	//	StBool();
-	//}
-
-
-
-	//void InputStamina()
-	//{
-	//	if (Input.GetKey(KeyCode.LeftShift) && (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && staminaBool == true)
-	//	{
-	//		//staminaBar = new Color(1, 1, 1, 1);
-	//		haveStamina -= 2f * Time.deltaTime;
-	//		staminaBar.gameObject.SetActive(true);
-	//		stamina.gameObject.SetActive(true);
-	//		stamina.localScale = new Vector3(0.1f * haveStamina, 0.4f, 0);
-	//	}
-	//	else
-	//	{
-	//		if (haveStamina < 10)
-	//			haveStamina += 1f * Time.deltaTime;
-	//		staminaBar.gameObject.SetActive(false);
-	//		stamina.gameObject.SetActive(false);
-
-	//	}
-
-	//	//if(staminaBar.color)
-	//}
-
-	//void StBool()
-	//{
-	//	if (haveStamina <= 0)
-	//	{
-	//		haveStamina = 0;
-	//		staminaBool = false;
-	//	}
-	//	else if (haveStamina >= 5f)
-	//	{
-	//		staminaBool = true;
-	//	}
-	//}
-
 	private Image staminaImage, staminaEmptyImage;
 	private RectTransform staminaSize;
 	private float chargeDelay, invisibleDelay;
@@ -105,8 +50,8 @@ public class Stamina : MonoBehaviour
 
 			SetStaminaClarity(1);
 
-			DecreaseStamina();
-			ScalingStaminaBar();
+			Decrease();
+			Scaling();
 		}
 		else
 		{
@@ -118,12 +63,12 @@ public class Stamina : MonoBehaviour
 
 			if (chargeDelay < 0.5f) return;
 
-			IncreaseStamina();
-			ScalingStaminaBar();
+			Increase();
+			Scaling();
 		}
 	}
 
-	private void DecreaseStamina()
+	private void Decrease()
 	{
 		presentStamina -= Time.deltaTime * gaugeDecreaseSpeed;
 		if (presentStamina <= 0)
@@ -132,7 +77,7 @@ public class Stamina : MonoBehaviour
 		}
 	}
 
-	private void IncreaseStamina()
+	private void Increase()
 	{
 		presentStamina += Time.deltaTime * gaugeIncreaseSpeed;
 
@@ -141,10 +86,10 @@ public class Stamina : MonoBehaviour
 			presentStamina = staminaMax;
 		}
 
-		InvisibleStamina();
+		Invisible();
 	}
 
-	private void InvisibleStamina()
+	private void Invisible()
 	{
 		if (staminaImage.color.a <= 0) return;
 
@@ -153,13 +98,15 @@ public class Stamina : MonoBehaviour
 		if (invisibleDelay >= 0.5f && !coroutineRun)
 		{
 			coroutineRun = true;
-			coroutine = StartCoroutine(StaminaEffect());
+			coroutine = StartCoroutine(InvisibleEffect());
 		}
 	}
 
-	private void ScalingStaminaBar()
+	private void Scaling()
 	{
-		staminaSize.sizeDelta = new Vector2(presentStamina / staminaMax * staminaMaxSize, 40);
+		float size = presentStamina / staminaMax * staminaMaxSize;
+
+		staminaSize.sizeDelta = new Vector2(size, 40);
 	}
 
 	private void SetStaminaClarity(float alpha)
@@ -175,6 +122,7 @@ public class Stamina : MonoBehaviour
 		{
 			organize = true;
 			staminaImage.color = new Color(1, 0, 0, staminaImage.color.a);
+			StartCoroutine(ChangeColor());
 		}
 		else if (presentStamina >= 50)
 		{
@@ -183,7 +131,18 @@ public class Stamina : MonoBehaviour
 		}
 	}
 
-	private IEnumerator StaminaEffect()
+	private IEnumerator ChangeColor()
+	{
+		float color;
+		while (staminaImage.color.r > 0)
+		{
+			color = presentStamina / staminaMax * gaugeIncreaseSpeed / 6;
+			staminaImage.color = new Color(1 - color, 0, color, staminaImage.color.a);
+			yield return new WaitForSeconds(0.1f);
+		}
+	}
+
+	private IEnumerator InvisibleEffect()
 	{
 		float alpha = staminaImage.color.a;
 		float decreaseValue = 30 / 255f;
