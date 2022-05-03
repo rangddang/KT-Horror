@@ -9459,7 +9459,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1684547583}
   - component: {fileID: 1684547585}
-  - component: {fileID: 1684547586}
+  - component: {fileID: 1684547584}
   m_Layer: 5
   m_Name: Stamina
   m_TagString: Untagged
@@ -9488,15 +9488,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 80}
   m_SizeDelta: {x: 800, y: 50}
   m_Pivot: {x: 0.5, y: 0}
---- !u!222 &1684547585
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1684547582}
-  m_CullTransparentMesh: 1
---- !u!114 &1684547586
+--- !u!114 &1684547584
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9505,12 +9497,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1684547582}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83d90cbda2ed77241886d0f7c801c588, type: 3}
+  m_Script: {fileID: 11500000, guid: e09535fe201ce3b4d981e76d7a176906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   run: 0
   gaugeDecreaseSpeed: 20
   gaugeIncreaseSpeed: 10
+--- !u!222 &1684547585
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684547582}
+  m_CullTransparentMesh: 1
 --- !u!1001 &1706723519
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9859,7 +9859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad9677e79f71bcd4ba834e228ce9caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
+  gameManager: {fileID: 941704202}
   maxSpeed: 4
   gravity: 9.8
   lookSensitivity: 5
@@ -9867,7 +9867,7 @@ MonoBehaviour:
   theCamera: {fileID: 1304595640}
   theLight: {fileID: 1894175320}
   _charter: {fileID: 1292280684}
-  stamina: {fileID: 1684547586}
+  stamina: {fileID: 1684547584}
 --- !u!1001 &1781356914
 PrefabInstance:
   m_ObjectHideFlags: 0
