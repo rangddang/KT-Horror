@@ -18,7 +18,7 @@ public class Stamina : MonoBehaviour
 	private void Awake()
 	{
 		staminaSize = transform.Find("StaminaBar").gameObject.GetComponent<RectTransform>();
-		staminaEmptyImage = transform.Find("StaminaEmpty").GetComponent<Image>();
+		staminaEmptyImage = transform.Find("StaminaBackgrond").GetComponent<Image>();
 		staminaImage = transform.Find("StaminaBar").GetComponent<Image>();
 	}
 	private void Start()
@@ -107,6 +107,7 @@ public class Stamina : MonoBehaviour
 		float size = presentStamina / staminaMax * staminaMaxSize;
 
 		staminaSize.sizeDelta = new Vector2(size, 40);
+		staminaImage.fillAmount = presentStamina / staminaMax * staminaMaxSize;
 	}
 
 	private void SetStaminaClarity(float alpha)

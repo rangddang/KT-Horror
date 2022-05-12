@@ -7,41 +7,46 @@ public class PlayerController : MonoBehaviour
 	public GameManager gameManager;
 
 	public float maxSpeed;
-
+	private float saveSpeed;
 	private float walkSpeed;
-
 	public float gravity;
-
-	public float lookSensitivity;
-
+	public float setLook;
+	private float lookSensitivity;
 	public float cameraRotationLimit;
-	private float currentCameraRotationX = 0;
+	private float currentCameraRotationX;
+	private float lightPosition;
+	private int lightBool;
+	private bool isMap;
+	public float v;
 
 	public Camera theCamera;
-
 	public Light theLight;
-
 	public CharacterController _charter;
-
 	private Rigidbody myRigid;
-
-	private float lightPosition;
-
-	private int lightBool;
-
 	public Stamina stamina;
+	public GameObject phone;
+
+	private Vector3 _charaterRotationY;
 
 
 
 	private void Awake()
 	{
-		//theCamera = FindObjectOfType<Camera>();
-		//gameManager = GetComponent<GameManager>();
+		theCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>();
+		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		myRigid = GetComponent<Rigidbody>();
-		//Sta = GetComponent
-        lightBool = 1;
-        lightPosition = 0.0f;
-    }
+	}
+
+	private void Start()
+	{
+		phone.SetActive(false);
+		lightBool = 1;
+		lightPosition = 0.0f;
+		lookSensitivity = setLook;
+		currentCameraRotationX = 0.0f;
+		_charaterRotationY = Vector3.zero;
+		saveSpeed = maxSpeed;
+	}
 
 	private void Update()
 	{
@@ -49,8 +54,12 @@ public class PlayerController : MonoBehaviour
 		Move();
 		CharacteraRotation();
 		CameraRotation();
-		
-		
+		PhoneMove();
+		if (Input.GetKeyDown(KeyCode.Tab))
+		{
+			MiniMap();
+		}
+
 	}
 
 	private float Gravity()
@@ -79,10 +88,11 @@ public class PlayerController : MonoBehaviour
 			walkSpeed = maxSpeed;
 		}
 
-		if (_moveDirZ < 0)
-		{
-			walkSpeed -= 0.5f;
-		}
+		//버그때문에 끔!(CCTV를 켰을때 뒤로가면 이동속도가 -0.5가 되서 0.5만큼씩 앞으로 감)
+		//if (_moveDirZ < 0)
+		//{
+		//	walkSpeed -= 0.5f;
+		//}
 
 		Vector3 _moveJump = new Vector3(0, 0, 0);
 		_moveJump += transform.up * (Gravity());
@@ -93,13 +103,13 @@ public class PlayerController : MonoBehaviour
 		Vector3 _velocity = (_moveHorizontal + _moveVertical).normalized * walkSpeed;
 
 		_charter.Move((_velocity + _moveJump) * Time.deltaTime * 1.0f);
-		
+
 	}
 
 	private void CharacteraRotation()
 	{
 		float _yRotation = Input.GetAxisRaw("Mouse X");
-		Vector3 _charaterRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
+		_charaterRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
 		myRigid.MoveRotation(myRigid.rotation * Quaternion.Euler(_charaterRotationY));
 	}
 
@@ -111,16 +121,17 @@ public class PlayerController : MonoBehaviour
 		currentCameraRotationX -= _cameraRotationX;
 		currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
 
-		theCamera.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
+		if(!isMap)
+			theCamera.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
 		if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
 		{
-			
+
 			if (Mathf.Abs(lightPosition) > 10.0f)
 			{
 				lightPosition = 10f * lightBool;
 				lightBool *= -1;
 			}
-			lightPosition += walkSpeed * 9.5f * lightBool * Time.deltaTime;
+			lightPosition += walkSpeed * 8.0f * lightBool * Time.deltaTime;
 		}
 		else
 		{
@@ -130,7 +141,41 @@ public class PlayerController : MonoBehaviour
 		theLight.transform.localEulerAngles = new Vector3((Mathf.Abs(lightPosition) * 0.5f) + 0.5f + currentCameraRotationX, lightPosition, 0);
 	}
 
-	
+	void MiniMap()
+	{
+		if (!isMap)
+		{
+			phone.SetActive(true);
+			StartCoroutine(PhonMove());
+			currentCameraRotationX = 0.0f;
+			lookSensitivity = 0f;
+			maxSpeed = 0f;
+			isMap = true;
+		}
+		else
+		{
+			phone.SetActive(false);
+			lookSensitivity = setLook;
+			maxSpeed = saveSpeed;
+			isMap = false;
+		}
+	}
 
+	void PhoneMove()
+    {
+		if (isMap)
+		{
+			theCamera.transform.localRotation = Quaternion.Lerp(theCamera.transform.localRotation, Quaternion.Euler(0f,0f,0f), 7f * Time.deltaTime);
+			phone.transform.localPosition = new Vector3(0, v, 0.4f);
+		}
+		else phone.transform.localPosition = new Vector3(0, 0, 0);
+
+	}
+
+	IEnumerator PhonMove()
+    {
+		for(v = 0.1f;v<0.8f;v+=0.05f)
+			yield return new WaitForSeconds(0.02f);
+    }
 	
 }
