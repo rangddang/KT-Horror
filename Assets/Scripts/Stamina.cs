@@ -10,6 +10,7 @@ public class Stamina : MonoBehaviour
 	private float staminaMax, presentStamina;
 	private float staminaMaxSize;
 	private bool coroutineRun, organize;
+	private PlayerController player;
 	private Coroutine coroutine;
 
 	[HideInInspector] public bool run;
@@ -20,6 +21,7 @@ public class Stamina : MonoBehaviour
 		staminaSize = transform.Find("StaminaBar").gameObject.GetComponent<RectTransform>();
 		staminaEmptyImage = transform.Find("StaminaBackgrond").GetComponent<Image>();
 		staminaImage = transform.Find("StaminaBar").GetComponent<Image>();
+		player = GameObject.Find("Player").GetComponent<PlayerController>();
 	}
 	private void Start()
 	{
@@ -35,10 +37,9 @@ public class Stamina : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKey(KeyCode.LeftShift) && (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && presentStamina > 0 && !organize)
+		if (Input.GetKey(KeyCode.LeftShift) && (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && presentStamina > 0 && !organize && !player.isMap)
 		{
 			run = true;
-
 			coroutineRun = false;
 			if (coroutine != null)
 			{
@@ -110,7 +111,7 @@ public class Stamina : MonoBehaviour
 		staminaImage.fillAmount = presentStamina / staminaMax * staminaMaxSize;
 	}
 
-	private void SetStaminaClarity(float alpha)
+	public void SetStaminaClarity(float alpha)
 	{
 		staminaImage.color = new Color(staminaImage.color.r, staminaImage.color.g, staminaImage.color.b, alpha);
 		staminaEmptyImage.color = new Color(staminaEmptyImage.color.r, staminaEmptyImage.color.g, staminaEmptyImage.color.b, alpha);

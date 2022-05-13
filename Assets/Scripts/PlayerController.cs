@@ -16,8 +16,9 @@ public class PlayerController : MonoBehaviour
 	private float currentCameraRotationX;
 	private float lightPosition;
 	private int lightBool;
-	private bool isMap;
+	public bool isMap;
 	public float v;
+	private int cCam;
 
 	public Camera theCamera;
 	public Light theLight;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
 	private Rigidbody myRigid;
 	public Stamina stamina;
 	public GameObject phone;
+	public Camera[] cameras;
 
 	private Vector3 _charaterRotationY;
 
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour
 		currentCameraRotationX = 0.0f;
 		_charaterRotationY = Vector3.zero;
 		saveSpeed = maxSpeed;
+		cCam = 0;
 	}
 
 	private void Update()
@@ -59,7 +62,10 @@ public class PlayerController : MonoBehaviour
 		{
 			MiniMap();
 		}
-
+		if(isMap && Input.GetKeyDown(KeyCode.A))
+        {
+			ChangeCamera();
+        }
 	}
 
 	private float Gravity()
@@ -145,12 +151,14 @@ public class PlayerController : MonoBehaviour
 	{
 		if (!isMap)
 		{
+			stamina.SetStaminaClarity(0);
 			phone.SetActive(true);
 			StartCoroutine(PhonMove());
 			currentCameraRotationX = 0.0f;
 			lookSensitivity = 0f;
 			maxSpeed = 0f;
 			isMap = true;
+			
 		}
 		else
 		{
@@ -158,6 +166,8 @@ public class PlayerController : MonoBehaviour
 			lookSensitivity = setLook;
 			maxSpeed = saveSpeed;
 			isMap = false;
+			theCamera.gameObject.SetActive(true);
+			cameras[cCam].gameObject.SetActive(false);
 		}
 	}
 
@@ -172,10 +182,23 @@ public class PlayerController : MonoBehaviour
 
 	}
 
+	void ChangeCamera()
+    {
+		
+		cameras[cCam].gameObject.SetActive(false);
+		cCam++;
+		if (cCam >= cameras.Length) cCam = 0;
+		cameras[cCam].gameObject.SetActive(true);
+		
+	}
+
 	IEnumerator PhonMove()
     {
 		for(v = 0.1f;v<0.8f;v+=0.05f)
 			yield return new WaitForSeconds(0.02f);
-    }
+		yield return new WaitForSeconds(0.2f);
+		theCamera.gameObject.SetActive(false);
+		cameras[cCam].gameObject.SetActive(true);
+	}
 	
 }
