@@ -37,7 +37,7 @@ public class Stamina : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKey(KeyCode.LeftShift) && (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && presentStamina > 0 && !organize && !player.isMap)
+		if (Input.GetKey(KeyCode.LeftShift) && (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && presentStamina > 0 && !organize && !player.isMap && !player.isHide)
 		{
 			run = true;
 			coroutineRun = false;

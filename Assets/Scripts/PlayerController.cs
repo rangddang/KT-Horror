@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
 	public bool isMap;
 	public float v;
 	private int cCam;
+	public bool isHide;
+	private bool ifHide;
 
 	public Camera theCamera;
 	public Light theLight;
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour
 	public Stamina stamina;
 	public GameObject phone;
 	public Camera[] cameras;
+	public GameObject hideObject;
 
 	private Vector3 _charaterRotationY;
 
@@ -58,6 +61,8 @@ public class PlayerController : MonoBehaviour
 		CharacteraRotation();
 		CameraRotation();
 		PhoneMove();
+		HideOn();
+		Ground();
 		if (Input.GetKeyDown(KeyCode.Tab))
 		{
 			MiniMap();
@@ -121,30 +126,32 @@ public class PlayerController : MonoBehaviour
 
 	private void CameraRotation()
 	{
-		float _xRotation = Input.GetAxisRaw("Mouse Y");
-		float _cameraRotationX = _xRotation * lookSensitivity;
+		if (!isMap && !isHide)
+		{
+			float _xRotation = Input.GetAxisRaw("Mouse Y");
+			float _cameraRotationX = _xRotation * lookSensitivity;
 
-		currentCameraRotationX -= _cameraRotationX;
-		currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
+			currentCameraRotationX -= _cameraRotationX;
+			currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
 
-		if(!isMap)
 			theCamera.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
-		if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-		{
-
-			if (Mathf.Abs(lightPosition) > 10.0f)
+			if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
 			{
-				lightPosition = 10f * lightBool;
-				lightBool *= -1;
+
+				if (Mathf.Abs(lightPosition) > 10.0f)
+				{
+					lightPosition = 10f * lightBool;
+					lightBool *= -1;
+				}
+				lightPosition += walkSpeed * 8.0f * lightBool * Time.deltaTime;
 			}
-			lightPosition += walkSpeed * 8.0f * lightBool * Time.deltaTime;
+			else
+			{
+				lightPosition *= 0.5f;
+				lightBool = 1;
+			}
+			theLight.transform.localEulerAngles = new Vector3((Mathf.Abs(lightPosition) * 0.5f) + 0.5f + currentCameraRotationX, lightPosition, 0);
 		}
-		else
-		{
-			lightPosition *= 0.5f;
-			lightBool = 1;
-		}
-		theLight.transform.localEulerAngles = new Vector3((Mathf.Abs(lightPosition) * 0.5f) + 0.5f + currentCameraRotationX, lightPosition, 0);
 	}
 
 	void MiniMap()
@@ -192,7 +199,62 @@ public class PlayerController : MonoBehaviour
 		
 	}
 
-	IEnumerator PhonMove()
+	void HideOn()
+    {
+		if(isHide == true)
+        {
+			theCamera.transform.localRotation = Quaternion.Lerp(theCamera.transform.localRotation, Quaternion.Euler(0f, 0f, 0f), 7f * Time.deltaTime);
+			transform.position = hideObject.transform.position + new Vector3(0,-0.4f,0);
+        }
+		if(ifHide == true)
+        {
+			if (Input.GetKeyDown(KeyCode.E))
+			{
+				if (isHide == false)
+				{
+					isHide = true;
+					maxSpeed = 0f;
+					gravity = 0;
+					theLight.transform.localEulerAngles = new Vector3(0, 0, 0);
+					currentCameraRotationX = 0.0f;
+				}
+				else
+				{
+					isHide = false;
+					maxSpeed = saveSpeed;
+					gravity = 9.8f;
+				}
+
+			}
+		}
+    }
+
+	void Ground()
+    {
+		if(transform.position.y < -0.5f)
+        {
+			transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Hide")
+        {
+			ifHide = true;
+			hideObject = other.gameObject;
+		}
+    }
+    private void OnTriggerExit(Collider other)
+    {
+		if (other.gameObject.tag == "Hide")
+		{
+			ifHide = false;
+			hideObject = null;
+		}
+	}
+
+    IEnumerator PhonMove()
     {
 		for(v = 0.1f;v<0.8f;v+=0.05f)
 			yield return new WaitForSeconds(0.02f);
