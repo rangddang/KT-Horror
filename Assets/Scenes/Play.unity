@@ -9788,7 +9788,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!82 &1302470888
 AudioSource:
@@ -9976,7 +9976,7 @@ GameObject:
   - component: {fileID: 1775802009}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12976,12 +12976,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 941704202}
   maxSpeed: 4
+  walkSpeed: 0
   gravity: 9.8
   setLook: 5
   cameraRotationLimit: 89
   isMap: 0
   v: 0
   isHide: 0
+  KT: {fileID: 1744942059983074496}
   theCamera: {fileID: 1304595640}
   theLight: {fileID: 1894175320}
   _charter: {fileID: 1292280684}
@@ -12992,6 +12994,7 @@ MonoBehaviour:
   - {fileID: 322890120}
   - {fileID: 1922778616}
   hideObject: {fileID: 0}
+  supportLight: {fileID: 649320928}
 --- !u!1001 &1781356914
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15883,9 +15886,11 @@ MonoBehaviour:
   KTHead: {fileID: 7309138853929183000}
   KTEyeL: {fileID: 559072576758987644}
   KTEyeR: {fileID: 720264886201397782}
-  speed: 6
---- !u!136 &1744942059983074499
-CapsuleCollider:
+  speed: 7
+  isTargeting: 1
+  isCatch: 0
+--- !u!143 &1744942059983074499
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -15894,9 +15899,13 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  serializedVersion: 2
   m_Height: 2
-  m_Direction: 1
+  m_Radius: 0.5
+  m_SlopeLimit: 60
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &1744942059983074500
 Rigidbody:
@@ -15909,10 +15918,10 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!1001 &5071389067070681258
 PrefabInstance:
@@ -15935,7 +15944,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6133241193843236560, guid: 700acfe7b6338c04095866dee4593cf5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6133241193843236560, guid: 700acfe7b6338c04095866dee4593cf5, type: 3}
       propertyPath: m_LocalRotation.w

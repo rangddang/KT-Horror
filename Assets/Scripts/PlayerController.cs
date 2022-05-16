@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 
 	public float maxSpeed;
 	private float saveSpeed;
-	private float walkSpeed;
+	public float walkSpeed;
 	public float gravity;
 	public float setLook;
 	private float lookSensitivity;
@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
 	public bool isHide;
 	private bool ifHide;
 
+	public GameObject KT;
 	public Camera theCamera;
 	public Light theLight;
 	public CharacterController _charter;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
 	public GameObject phone;
 	public Camera[] cameras;
 	public GameObject hideObject;
+	public Light supportLight;
 
 	private Vector3 _charaterRotationY;
 
@@ -56,21 +58,42 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
-		Gravity();
-		Move();
-		CharacteraRotation();
-		CameraRotation();
-		PhoneMove();
-		HideOn();
-		Ground();
-		if (Input.GetKeyDown(KeyCode.Tab))
+		if (KT.GetComponent<KT>().isCatch == false)
 		{
-			MiniMap();
+			Gravity();
+			Move();
+			CharacteraRotation();
+			CameraRotation();
+			PhoneMove();
+			HideOn();
+			Ground();
+			if (Input.GetKeyDown(KeyCode.Tab))
+			{
+				MiniMap();
+			}
+			if (isMap && Input.GetKeyDown(KeyCode.A))
+			{
+				ChangeCamera();
+			}
 		}
-		if(isMap && Input.GetKeyDown(KeyCode.A))
-        {
-			ChangeCamera();
+        else 
+		{
+			stamina.SetStaminaClarity(0);
+			phone.SetActive(false);
+			lookSensitivity = setLook;
+			isMap = false;
+			theCamera.gameObject.SetActive(true);
+			cameras[cCam].gameObject.SetActive(false);
+			isHide = false;
+			//gravity = 9.8f;
+			maxSpeed =0;
+			transform.position = new Vector3(transform.position.x, 1.8f, transform.position.z);
+			theLight.GetComponent<LightController>().battery = 0;
+			supportLight.range = 3;
+			supportLight.intensity = 1;
+			StartCoroutine(GameOver());
         }
+		
 	}
 
 	private float Gravity()
@@ -100,10 +123,6 @@ public class PlayerController : MonoBehaviour
 		}
 
 		//버그때문에 끔!(CCTV를 켰을때 뒤로가면 이동속도가 -0.5가 되서 0.5만큼씩 앞으로 감)
-		//if (_moveDirZ < 0)
-		//{
-		//	walkSpeed -= 0.5f;
-		//}
 
 		Vector3 _moveJump = new Vector3(0, 0, 0);
 		_moveJump += transform.up * (Gravity());
@@ -262,5 +281,12 @@ public class PlayerController : MonoBehaviour
 		theCamera.gameObject.SetActive(false);
 		cameras[cCam].gameObject.SetActive(true);
 	}
+
+	IEnumerator GameOver()
+    {
+		yield return new WaitForSeconds(2.5f);
+		KT.GetComponent<KT>().isCatch = false;
+		theCamera.gameObject.SetActive(false);
+    }
 	
 }
