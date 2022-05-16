@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
 	public Camera[] cameras;
 	public GameObject hideObject;
 	public Light supportLight;
+	private float gameOverTime;
+
 
 	private Vector3 _charaterRotationY;
 
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour
 		_charaterRotationY = Vector3.zero;
 		saveSpeed = maxSpeed;
 		cCam = 0;
+		gameOverTime = 0;
 	}
 
 	private void Update()
@@ -90,7 +93,7 @@ public class PlayerController : MonoBehaviour
 			theLight.GetComponent<LightController>().battery = 0;
 			supportLight.range = 3;
 			supportLight.intensity = Random.Range(0f,3f);
-			StartCoroutine(GameOver());
+			GameOver();
         }
 		
 	}
@@ -255,6 +258,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+	void GameOver()
+    {
+		gameOverTime += Time.deltaTime;
+		if (gameOverTime >= 2.5f)
+		{
+			gameManager.gameOver = true;
+			KT.GetComponent<KT>().isCatch = false;
+			theCamera.gameObject.SetActive(false);
+		}
+	}
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Hide")
@@ -280,12 +294,5 @@ public class PlayerController : MonoBehaviour
 		theCamera.gameObject.SetActive(false);
 		cameras[cCam].gameObject.SetActive(true);
 	}
-
-	IEnumerator GameOver()
-    {
-		yield return new WaitForSeconds(2.5f);
-		KT.GetComponent<KT>().isCatch = false;
-		theCamera.gameObject.SetActive(false);
-    }
 	
 }

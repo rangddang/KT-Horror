@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class KT : MonoBehaviour
 {
+	public GameManager gameManager;
+
 	public Transform target;
 	public GameObject player;
 	public float turnSpeed;
@@ -17,34 +19,38 @@ public class KT : MonoBehaviour
 	private Rigidbody rigid;
 	private CharacterController cha;
 	public Light flash;
-
+	private Vector3 dir;
 
 	private void Awake()
     {
 		rigid = GetComponent<Rigidbody>();
 		cha = GetComponent<CharacterController>();
+		GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 
     private void Start()
     {
 		maxSpeed = speed;
+		StartCoroutine(randKTMove());
 	}
 
     private void Update()
     {
-		//if (flash.GetComponent<LightController>().flashBool == true)
-			TargetObject(KTHead);
-		if (!isCatch)
+		if (gameManager.gameOver == false)
 		{
-			TargetObject(KTEyeL);
-			TargetObject(KTEyeR);
-		}
-        else
-        {
-			KTEyeL.transform.rotation = Quaternion.identity;//Euler(Random.Range(-120f,120f), Random.Range(-120f, 120f), Random.Range(-120f, 120f));
-			KTEyeR.transform.rotation = Quaternion.identity;
+			Targeting();
+			TargetObject(KTHead);
+			if (!isCatch)
+			{
+				TargetObject(KTEyeL);
+				TargetObject(KTEyeR);
+			}
+			else
+			{
+				KTEyeL.transform.rotation = Quaternion.identity;//Euler(Random.Range(-120f,120f), Random.Range(-120f, 120f), Random.Range(-120f, 120f));
+				KTEyeR.transform.rotation = Quaternion.identity;
 
-		}
+			}
 
 			if (isTargeting)
 			{
@@ -58,8 +64,39 @@ public class KT : MonoBehaviour
 				rotation.eulerAngles += new Vector3(-15f, 0, 0);
 				target.transform.rotation = Quaternion.Lerp(target.transform.rotation, rotation * Quaternion.Euler(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f)), turnSpeed * Time.deltaTime);
 			}
+		}
+	}
+
+	void Targeting()
+    {
+		if (!isCatch)
+		{
+			Vector3 direction = (target.transform.position - KTHead.transform.position);
+			direction += new Vector3(0, -0.4f, 0);
+			//Debug.DrawRay(KTHead.transform.position, direction * 30, Color.blue, 0.3f);
+			RaycastHit ray;
+			if (Physics.Raycast(KTHead.transform.position, direction, out ray, 30))
+			{
+				//Debug.Log(ray.collider.tag);
+				if (ray.collider.tag == "Player")
+				{
+					isTargeting = true;
+				}
+				else
+				{
+					isTargeting = false;
+					cha.Move(dir.normalized * speed * 1.0f * Time.deltaTime);
+				}
+			}
+			else
+			{
+				isTargeting = false;
+				cha.Move(dir.normalized * speed * 1.0f * Time.deltaTime);
+			}
+		}
 
 	}
+	
 
 	private void TargetObject(GameObject It)
 	{
@@ -86,22 +123,22 @@ public class KT : MonoBehaviour
 		//transform.localPosition += dir * speed * Time.deltaTime;
 	}
 
-  //  private void OnCollisionEnter(Collision collision)
-  //  {
-  //      if(collision.gameObject.tag == "Player")
-  //      {
-		//	isTargeting = false;
-		//	isCatch = true;
-			
-		//}
-  //  }
-
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-		if (hit.gameObject.tag == "Player" && hit.gameObject.GetComponent<PlayerController>().isHide == false)
+		if (hit.gameObject.tag == "Player" && player.gameObject.GetComponent<PlayerController>().isHide == false)
 		{
 			isTargeting = false;
 			isCatch = true;
+		}
+	}
+
+	IEnumerator randKTMove()
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(0.5f);
+
+			dir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
 		}
 	}
 }
