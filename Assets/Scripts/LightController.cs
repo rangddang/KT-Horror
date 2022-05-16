@@ -13,7 +13,7 @@ public class LightController : MonoBehaviour
 
 	private Light theLight;
 
-	private bool flashBool;
+	public bool flashBool;
 
 	public float lightPower;
 

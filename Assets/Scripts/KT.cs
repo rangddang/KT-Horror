@@ -5,6 +5,7 @@ using UnityEngine;
 public class KT : MonoBehaviour
 {
 	public Transform target;
+	public GameObject player;
 	public float turnSpeed;
 	public GameObject KTHead;
 	public GameObject KTEyeL;
@@ -15,6 +16,7 @@ public class KT : MonoBehaviour
 	public bool isCatch;
 	private Rigidbody rigid;
 	private CharacterController cha;
+	public Light flash;
 
 
 	private void Awake()
@@ -30,21 +32,32 @@ public class KT : MonoBehaviour
 
     private void Update()
     {
-		TargetObject(KTHead);
-		TargetObject(KTEyeL);
-		TargetObject(KTEyeR);
-
-		if (isTargeting)
+		//if (flash.GetComponent<LightController>().flashBool == true)
+			TargetObject(KTHead);
+		if (!isCatch)
+		{
+			TargetObject(KTEyeL);
+			TargetObject(KTEyeR);
+		}
+        else
         {
-			MoveKT();
+			KTEyeL.transform.rotation = Quaternion.identity;
+			KTEyeR.transform.rotation = Quaternion.identity;
+
 		}
-        if (isCatch) {
-			rigid.position = transform.position;
-			Vector3 direction = (KTHead.transform.position - target.transform.position);
-			Quaternion rotation = Quaternion.LookRotation(direction);
-			rotation.eulerAngles += new Vector3(-15f, 0, 0);
-			target.transform.rotation = Quaternion.Lerp(target.transform.rotation, rotation * Quaternion.Euler(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f)), turnSpeed * Time.deltaTime);
-		}
+
+			if (isTargeting)
+			{
+				MoveKT();
+			}
+			if (isCatch)
+			{
+				rigid.position = transform.position;
+				Vector3 direction = (KTHead.transform.position - target.transform.position);
+				Quaternion rotation = Quaternion.LookRotation(direction);
+				rotation.eulerAngles += new Vector3(-15f, 0, 0);
+				target.transform.rotation = Quaternion.Lerp(target.transform.rotation, rotation * Quaternion.Euler(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f)), turnSpeed * Time.deltaTime);
+			}
 
 	}
 
@@ -85,11 +98,10 @@ public class KT : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-		if (hit.gameObject.tag == "Player")
+		if (hit.gameObject.tag == "Player" && hit.gameObject.GetComponent<PlayerController>().isHide == false)
 		{
 			isTargeting = false;
 			isCatch = true;
-
 		}
 	}
 }

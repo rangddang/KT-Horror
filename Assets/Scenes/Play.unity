@@ -13834,6 +13834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battery: 100
+  flashBool: 0
   lightPower: 2
 --- !u!4 &1904463652 stripped
 Transform:
@@ -15882,6 +15883,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1306215088}
+  player: {fileID: 1306446836}
   turnSpeed: 7
   KTHead: {fileID: 7309138853929183000}
   KTEyeL: {fileID: 559072576758987644}
@@ -15889,6 +15891,7 @@ MonoBehaviour:
   speed: 7
   isTargeting: 1
   isCatch: 0
+  flash: {fileID: 1894175320}
 --- !u!143 &1744942059983074499
 CharacterController:
   m_ObjectHideFlags: 0

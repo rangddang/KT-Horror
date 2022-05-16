@@ -85,12 +85,11 @@ public class PlayerController : MonoBehaviour
 			theCamera.gameObject.SetActive(true);
 			cameras[cCam].gameObject.SetActive(false);
 			isHide = false;
-			//gravity = 9.8f;
 			maxSpeed =0;
 			transform.position = new Vector3(transform.position.x, 1.8f, transform.position.z);
 			theLight.GetComponent<LightController>().battery = 0;
 			supportLight.range = 3;
-			supportLight.intensity = 1;
+			supportLight.intensity = Random.Range(0f,3f);
 			StartCoroutine(GameOver());
         }
 		
