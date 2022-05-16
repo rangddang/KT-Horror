@@ -41,7 +41,7 @@ public class KT : MonoBehaviour
 		}
         else
         {
-			KTEyeL.transform.rotation = Quaternion.identity;
+			KTEyeL.transform.rotation = Quaternion.identity;//Euler(Random.Range(-120f,120f), Random.Range(-120f, 120f), Random.Range(-120f, 120f));
 			KTEyeR.transform.rotation = Quaternion.identity;
 
 		}
