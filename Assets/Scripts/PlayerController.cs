@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	public GameManager gameManager;
+	private GameManager gameManager;
 
 	public float maxSpeed;
 	private float saveSpeed;
@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
 	public Camera theCamera;
 	public Light theLight;
 	public CharacterController _charter;
-	private Rigidbody myRigid;
 	public Stamina stamina;
 	public GameObject phone;
 	public Camera[] cameras;
@@ -41,9 +40,9 @@ public class PlayerController : MonoBehaviour
 
 	private void Awake()
 	{
+		gameManager = GameObject.FindObjectOfType<GameManager>();
 		theCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>();
 		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-		myRigid = GetComponent<Rigidbody>();
 	}
 
 	private void Start()
@@ -127,7 +126,7 @@ public class PlayerController : MonoBehaviour
 		//버그때문에 끔!(CCTV를 켰을때 뒤로가면 이동속도가 -0.5가 되서 0.5만큼씩 앞으로 감)
 
 		Vector3 _moveJump = new Vector3(0, 0, 0);
-		_moveJump += transform.up * (Gravity());
+		_moveJump += transform.up * Gravity();
 
 		Vector3 _moveHorizontal = transform.right * _moveDirX;
 		Vector3 _moveVertical = transform.forward * _moveDirZ;
@@ -142,7 +141,7 @@ public class PlayerController : MonoBehaviour
 	{
 		float _yRotation = Input.GetAxisRaw("Mouse X");
 		_charaterRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
-		myRigid.MoveRotation(myRigid.rotation * Quaternion.Euler(_charaterRotationY));
+		transform.localRotation *= Quaternion.Euler(_charaterRotationY);
 	}
 
 	private void CameraRotation()
